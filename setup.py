@@ -8,5 +8,6 @@ setup(
     license='',
     author='KARTHI VINCENT',
     author_email='karthi.vincent@news.co.uk',
-    description='Estimating cancellation rarte over time'
+    description='Estimating cancellation rate over time'
 )
+
