@@ -1,17 +1,14 @@
-select * from (SELECT
+SELECT
   cpn,
-  country,
-  gender,
-  CASE
-    WHEN dob <> '' THEN YEAR(TIMESTAMP)-INTEGER(LEFT(dob, 4))
-  END AS age,
-  subscriptions_contractStartDate,
-  subscriptions_subscriptionStatusCode,
-  CancellationRequestedDate,
-  subscriptions_promoCode,
-  subscriptions_paymentMethodSelection,
+  country1,
+  gender1,
+  MAX(CASE
+      WHEN dob <> '' THEN YEAR(CURRENT_TIMESTAMP()) -INTEGER(LEFT(dob, 4)) END) AS age,
+  DATE(subscriptions_contractStartDate1) AS subscriptions_contractStartDate,
+  DATE(CancellationRequestedDate) AS CancellationRequestedDate,
   NVL(duration_cancellation, 0) AS duration_cancellation,
-  status,
+  MAX(primary_device) primary_device,
+  MAX(secondary_device) secondary_device,
   SUM(active_days ) AS active_days,
   SUM(recency ) AS recency,
   SUM(events_weekdays ) AS events_weekdays,
@@ -32,17 +29,26 @@ FROM
   [newsuk-datatech-dev-1251:tnl_trial_conversion.omniture_agg]
 WHERE
   duration_today <= 45
+  AND cpn NOT IN (
+  SELECT
+    cpn
+  FROM (
+    SELECT
+      cpn,
+      COUNT(* ) cnt
+    FROM
+      [newsuk-datatech-prod:athena.accounts_20171116]
+    WHERE
+      subscriptions.mpc = 'MP370'
+    GROUP BY
+      cpn)
+  WHERE
+    cnt >1)
 GROUP BY
   cpn,
-  country,
-  gender,
-  age,
-  status,
+  country1,
+  gender1,
   subscriptions_contractStartDate,
-  subscriptions_subscriptionStatusCode,
   CancellationRequestedDate,
-  subscriptions_promoCode,
-  subscriptions_paymentMethodSelection,
-  primary_device,
   duration_cancellation,
-  secondary_device) where cpn ='JBC6842132868'
+  CancellationRequestedDate,

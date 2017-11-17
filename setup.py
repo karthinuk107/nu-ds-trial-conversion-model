@@ -10,4 +10,3 @@ setup(
     author_email='karthi.vincent@news.co.uk',
     description='Estimating cancellation rate over time'
 )
-
