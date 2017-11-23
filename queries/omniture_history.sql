@@ -36,7 +36,7 @@ SELECT
   SUM(CASE
       WHEN a.page_views = 1 AND (a.activity_hour>21 OR a.activity_hour <=4) THEN 1
       ELSE 0 END) AS late_night_views,
-  SUM(a.page_views ) AS total_page_views,
+  SUM(a.page_views ) AS total_page_views,interactions
 FROM (
   SELECT
     cpn,
@@ -256,7 +256,8 @@ FROM (
                 ELSE 'null'
               END AS cpn
               -- , case when prop1 = 'the times and sunday times' then post_prop71 else 'others' end as parent_site
-            FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:omniture_rawlogs_daily.newsinttimesnetworkprodv2_daily_], TIMESTAMP('2016-11-04'),CURRENT_TIMESTAMP()))) M
+            FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:omniture_rawlogs_daily.newsinttimesnetworkprodv2_daily_],
+            TIMESTAMP('2016-11-04'),CURRENT_TIMESTAMP()))) M
           LEFT JOIN
             [newsuk-datatech-uat-144114:omniture_reporting.ref_device_type] LK_DV
           ON
