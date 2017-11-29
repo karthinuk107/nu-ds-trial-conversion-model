@@ -30,13 +30,13 @@ FROM (
       FIRST_VALUE( country ) OVER (PARTITION BY cpn ORDER BY TIMESTAMP DESC) AS country1,
       FIRST_VALUE( subscriptions.contractStartDate ) OVER (PARTITION BY cpn ORDER BY TIMESTAMP DESC) AS subscriptions.contractStartDate1,
     FROM
-      TABLE_DATE_RANGE ([newsuk-datatech-prod:athena.accounts_],TIMESTAMP(DATE_ADD('2016-11-05',-1,"DAY")),TIMESTAMP(DATE_ADD(CURRENT_DATE(),-1,"DAY")))
+      TABLE_DATE_RANGE ([newsuk-datatech-prod:athena.accounts_],TIMESTAMP(DATE_ADD('2016-09-01',-1,"DAY")),TIMESTAMP(DATE_ADD(CURRENT_DATE(),-1,"DAY")))
     WHERE
       TIMESTAMP <= TIMESTAMP(DATE_ADD(subscriptions.contractStartDate,90,"DAY"))
       AND subscriptions.mpc = 'MP370'
       AND subscriptions.subscriptionStatusCode IN ('Active',
         'Cancelled',
         'Terminated',
-        'Cancellation Requested')))
+        'Cancellation Requested') ) )
 WHERE
   ROW_NUMBER = 1
