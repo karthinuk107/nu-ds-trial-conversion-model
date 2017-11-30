@@ -4,3 +4,4 @@ pandas
 numpy
 tensorflow
 sckit-survival
+gcloud
