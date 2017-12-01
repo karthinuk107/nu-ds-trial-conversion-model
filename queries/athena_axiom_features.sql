@@ -56,10 +56,10 @@ SELECT
 FROM (
   SELECT
     cpn AS cpn_
-  FROM
-    [newsuk-datatech-prod:athena.accounts_20171113]
+  FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:athena.accounts_],CURRENT_TIMESTAMP(),CURRENT_TIMESTAMP()))
   WHERE
-    subscriptions.mpc = 'MP370' ) athena LEFT JOIN (
+    subscriptions.mpc = 'MP370' ) athena
+LEFT JOIN (
   SELECT
     *
   FROM (
@@ -76,7 +76,7 @@ FROM (
           WHEN product_family ='Times - Registered Access' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_RA_L12M_trx_count,
       MAX(CASE
-          WHEN product_family ='Times - Registered Access' THEN DATEDIFF(CURRENT_DATE(),DATE(First_registered_or_subscribed))
+          WHEN product_family ='Times - Registered Access' THEN DATEDIFF(CURRENT_DATE(), DATE(First_registered_or_subscribed))
           ELSE 0 END) AS Times_RA_tenure,
       --MAX(CASE WHEN product_family ='Times - Registered Access' THEN DATEDIFF(current_date(),last_engaged) ELSE 0 END) AS Times_RA_engaged_recency,
       -- as no last engaged date available for Times RA
@@ -87,10 +87,10 @@ FROM (
           WHEN product_family ='Times Subscription' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_SUB_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Times Subscription' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Times Subscription' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_SUB_tenure,
       SUM(CASE
-          WHEN product_family ='Times Subscription' THEN DATEDIFF(CURRENT_DATE(),last_engaged)
+          WHEN product_family ='Times Subscription' THEN DATEDIFF(CURRENT_DATE(), last_engaged)
           ELSE 0 END) AS Times_SUB_engaged_recency,
       SUM(CASE
           WHEN product_family ='Times Promotions' THEN 1
@@ -106,10 +106,10 @@ FROM (
           WHEN product_family ='Times Ad hoc Prospects' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_Adhoc_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Times Ad hoc Prospects' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Times Ad hoc Prospects' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_Adhoc_tenure,
       SUM(CASE
-          WHEN product_family ='Times Ad hoc Prospects' THEN DATEDIFF(CURRENT_DATE(),last_engaged)
+          WHEN product_family ='Times Ad hoc Prospects' THEN DATEDIFF(CURRENT_DATE(), last_engaged)
           ELSE 0 END) AS Times_Adhoc_engaged_recency,
       SUM(CASE
           WHEN product_family ='Times Competitions' THEN 1
@@ -118,10 +118,10 @@ FROM (
           WHEN product_family ='Times Competitions' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_COMP_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Times Competitions' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Times Competitions' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_COMP_tenure,
       SUM(CASE
-          WHEN product_family ='Times Competitions' THEN DATEDIFF(CURRENT_DATE(),last_engaged)
+          WHEN product_family ='Times Competitions' THEN DATEDIFF(CURRENT_DATE(), last_engaged)
           ELSE 0 END) AS Times_COMP_engaged_recency,
       SUM(CASE
           WHEN product_family ='Riviera Travel' THEN 1
@@ -130,10 +130,10 @@ FROM (
           WHEN product_family ='Riviera Travel' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_RT_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Riviera Travel' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Riviera Travel' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_RT_tenure,
       SUM(CASE
-          WHEN product_family ='Riviera Travel' THEN DATEDIFF(CURRENT_DATE(),last_engaged)
+          WHEN product_family ='Riviera Travel' THEN DATEDIFF(CURRENT_DATE(), last_engaged)
           ELSE 0 END) AS Times_RT_engaged_recency,
       SUM(CASE
           WHEN product_family ='ST Wine Club' THEN 1
@@ -142,7 +142,7 @@ FROM (
           WHEN product_family ='ST Wine Club' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_ST_WINE_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='ST Wine Club' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='ST Wine Club' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_ST_WINE_tenure,
       --SUM(CASE WHEN product_family ='ST Wine Club' THEN DATEDIFF(current_date(),last_engaged) ELSE 0 END) AS Times_ST_WINE_engaged_recency,
       --as no last engaged date available for Times Wine club
@@ -153,7 +153,7 @@ FROM (
           WHEN product_family ='Encounters Dating' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_ED_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Encounters Dating' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Encounters Dating' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_ED_tenure,
       --SUM(CASE WHEN product_family ='Encounters Dating' THEN DATEDIFF(current_date(),last_engaged) ELSE 0 END) AS Times_ED_engaged_recency,
       -- as no last engaged date available for Times ED
@@ -164,10 +164,10 @@ FROM (
           WHEN product_family ='ST Travel Magazine' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_ST_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='ST Travel Magazine' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='ST Travel Magazine' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_ST_tenure,
       SUM(CASE
-          WHEN product_family ='ST Travel Magazine' THEN DATEDIFF(CURRENT_DATE(),last_engaged)
+          WHEN product_family ='ST Travel Magazine' THEN DATEDIFF(CURRENT_DATE(), last_engaged)
           ELSE 0 END) AS Times_ST_engaged_recency,
       SUM(CASE
           WHEN product_family ='Times Currency Service' THEN 1
@@ -176,7 +176,7 @@ FROM (
           WHEN product_family ='Times Currency Service' THEN INTEGER(trx_count_L12M)
           ELSE 0 END) AS Times_CUR_SERVICES_L12M_trx_count,
       SUM(CASE
-          WHEN product_family ='Times Currency Service' THEN DATEDIFF(CURRENT_DATE(),First_registered_or_subscribed)
+          WHEN product_family ='Times Currency Service' THEN DATEDIFF(CURRENT_DATE(), First_registered_or_subscribed)
           ELSE 0 END) AS Times_CUR_SERVICES_tenure,
       --SUM(CASE WHEN product_family ='Times Currency Service' THEN DATEDIFF(current_date(),last_engaged) ELSE 0 END) AS Times_CUR_SERVICES_engaged_recency,
       -- as no last engaged date available for Times Currency
