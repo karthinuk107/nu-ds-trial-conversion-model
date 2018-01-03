@@ -1,147 +1,143 @@
 SELECT
-  a.cpn AS cpn,
-  COUNT(DISTINCT(a.active_events_3_month)) active_days,
-  MIN(a.date_diff) AS recency,
+  cpn,
   activity_date,
   SUM(CASE
-      WHEN a.WEEKEND =0 AND a.events =1 THEN 1
+      WHEN WEEKEND =0 AND events =1 THEN 1
       ELSE 0 END) AS events_weekdays,
   SUM(CASE
-      WHEN a.WEEKEND =1 AND a.events =1 THEN 1
+      WHEN WEEKEND =1 AND events =1 THEN 1
       ELSE 0 END) AS events_weekends,
   COUNT(DISTINCT(CASE
-        WHEN a.WEEKEND =0 THEN a.activity_date END)) AS active_weekdays,  COUNT(DISTINCT(CASE
-        WHEN a.WEEKEND =1 THEN a.activity_date END)) AS active_weekends,
-  COUNT(DISTINCT(a.week_no)) AS active_weeks,
+        WHEN WEEKEND =0 THEN activity_date END)) AS active_weekdays,  COUNT(DISTINCT(CASE
+        WHEN WEEKEND =1 THEN activity_date END)) AS active_weekends,
+  COUNT(DISTINCT(week_no)) AS active_weeks,
   COUNT(DISTINCT(CASE
-        WHEN a.WEEKEND =0 THEN a.visit_num END)) AS visits_weekdays,  COUNT(DISTINCT(CASE
-        WHEN a.WEEKEND =1 THEN a.visit_num END)) AS visits_weekends,
-  b.primary_device AS primary_device,
-  b.secondary_device AS secondary_device,
+        WHEN WEEKEND =0 THEN visit_num END)) AS visits_weekdays,  COUNT(DISTINCT(CASE
+        WHEN WEEKEND =1 THEN visit_num END)) AS visits_weekends,
   SUM(CASE
-      WHEN a.page_views = 1 AND a.WEEKEND =0 THEN 1
+      WHEN page_views = 1 AND WEEKEND =0 THEN 1
       ELSE 0 END) AS views_weekdays,
   SUM(CASE
-      WHEN a.page_views = 1 AND a.WEEKEND =1 THEN 1
+      WHEN page_views = 1 AND WEEKEND =1 THEN 1
       ELSE 0 END) AS views_weekends,
   SUM(CASE
-      WHEN a.page_views = 1 AND a.activity_hour>4 AND a.activity_hour<=11 THEN 1
+      WHEN page_views = 1 AND activity_hour>4 AND activity_hour<=11 THEN 1
       ELSE 0 END) AS morning_views,
   SUM(CASE
-      WHEN a.page_views = 1 AND a.activity_hour>11 AND a.activity_hour<=16 THEN 1
+      WHEN page_views = 1 AND activity_hour>11 AND activity_hour<=16 THEN 1
       ELSE 0 END) AS afternoon_views,
   SUM(CASE
-      WHEN a.page_views = 1 AND a.activity_hour>16 AND a.activity_hour<=21 THEN 1
+      WHEN page_views = 1 AND activity_hour>16 AND activity_hour<=21 THEN 1
       ELSE 0 END) AS evening_views,
   SUM(CASE
-      WHEN a.page_views = 1 AND (a.activity_hour>21 OR a.activity_hour <=4) THEN 1
+      WHEN page_views = 1 AND (activity_hour>21 OR activity_hour <=4) THEN 1
       ELSE 0 END) AS late_night_views,
-  SUM(a.page_views ) AS total_page_views,
+  SUM(page_views ) AS total_page_views,
   SUM(interactions) AS interactions,
   SUM(CASE
-      WHEN a.section = 'news' THEN INTEGER('1')
+      WHEN section = 'news' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS news_cnt,
   SUM(CASE
-      WHEN a.section = 'puzzles' THEN INTEGER('1')
+      WHEN section = 'puzzles' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS puzzles_cnt,
   SUM(CASE
-      WHEN a.section LIKE 'world%' THEN INTEGER('1')
+      WHEN section LIKE 'world%' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS world_cnt,
   SUM(CASE
-      WHEN a.section LIKE '%Sport%' THEN INTEGER('1')
+      WHEN section LIKE '%Sport%' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS sport_cnt,
   SUM(CASE
-      WHEN a.section LIKE '%Business%' THEN INTEGER('1')
+      WHEN section LIKE '%Business%' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS business_cnt,
   SUM(CASE
-      WHEN a.section = 'Comment' THEN INTEGER('1')
+      WHEN section = 'Comment' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS comment_cnt,
   SUM(CASE
-      WHEN a.section ='Front' THEN INTEGER('1')
+      WHEN section ='Front' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS Front_cnt,
   SUM(CASE
-      WHEN a.section = 'Times2' THEN INTEGER('1')
+      WHEN section = 'Times2' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS times2_cnt,
   SUM(CASE
-      WHEN a.section = 'Register' THEN INTEGER('1')
+      WHEN section = 'Register' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS register_cnt,
   SUM(CASE
-      WHEN a.section = 'past 6 days' THEN INTEGER('1')
+      WHEN section = 'past 6 days' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS past6d_cnt,
   SUM(CASE
-      WHEN a.section = 'Scotland' OR a.section = '%scottish%' THEN INTEGER('1')
+      WHEN section = 'Scotland' OR section = '%scottish%' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS scotland_cnt,
   SUM(CASE
-      WHEN a.section = 'the times acquisition store' THEN INTEGER('1')
+      WHEN section = 'the times acquisition store' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS TAS_cnt,
   SUM(CASE
-      WHEN a.section = 'news review' THEN INTEGER('1')
+      WHEN section = 'news review' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS news_reviews_cnt,
   SUM(CASE
-      WHEN a.section = 'Life' THEN INTEGER('1')
+      WHEN section = 'Life' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS life_cnt,
   SUM(CASE
-      WHEN a.section = 'Mindgames' THEN INTEGER('1')
+      WHEN section = 'Mindgames' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS mindgames_cnt,
   SUM(CASE
-      WHEN a.section = 'Opinion' THEN INTEGER('1')
+      WHEN section = 'Opinion' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS opinion_cnt,
   SUM(CASE
-      WHEN a.section = 'Arts' THEN INTEGER('1')
+      WHEN section = 'Arts' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS arts_cnt,
   SUM(CASE
-      WHEN a.section = 'fashion' THEN INTEGER('1')
+      WHEN section = 'fashion' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS fashion_cnt,
   SUM(CASE
-      WHEN a.section = 'Driving' THEN INTEGER('1')
+      WHEN section = 'Driving' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS driving_cnt,
   SUM(CASE
-      WHEN a.section = 'books' THEN INTEGER('1')
+      WHEN section = 'books' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS books_cnt,
   SUM(CASE
-      WHEN a.section = 'Home' THEN INTEGER('1')
+      WHEN section = 'Home' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS home_cnt,
   SUM(CASE
-      WHEN a.section = 'Magazine' THEN INTEGER('1')
+      WHEN section = 'Magazine' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS magazine_cnt,
   SUM(CASE
-      WHEN a.section = 'Money' THEN INTEGER('1')
+      WHEN section = 'Money' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS money_cnt,
   SUM(CASE
-      WHEN a.section = 'football' OR a.section ='premier league' THEN INTEGER('1')
+      WHEN section = 'football' OR section ='premier league' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS football_cnt,
   SUM(CASE
-      WHEN a.section = 'News_review' THEN INTEGER('1')
+      WHEN section = 'News_review' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS news_review_cnt,
   SUM(CASE
-      WHEN a.section = 'Saturday_review' THEN INTEGER('1')
+      WHEN section = 'Saturday_review' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS saturday_review_cnt,
   SUM(CASE
-      WHEN a.section = 'Style' THEN INTEGER('1')
+      WHEN section = 'Style' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS style_cnt,
   SUM(CASE
-      WHEN a.section = 'culture' THEN INTEGER('1')
+      WHEN section = 'culture' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS culture_cnt,
   SUM(CASE
-      WHEN a.section = 'The_game' THEN INTEGER('1')
+      WHEN section = 'The_game' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS the_game_cnt,
   SUM(CASE
-      WHEN a.section = 'cricket' THEN INTEGER('1')
+      WHEN section = 'cricket' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS cricket_cnt,
   SUM(CASE
-      WHEN a.section = 'Times+' THEN INTEGER('1')
+      WHEN section = 'Times+' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS timesplus_cnt,
   SUM(CASE
-      WHEN a.section = 'weekend' THEN INTEGER('1')
+      WHEN section = 'weekend' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS weekend_cnt,
   SUM(CASE
-      WHEN a.section = 'Travel' THEN INTEGER('1')
+      WHEN section = 'Travel' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS travel_cnt,
   SUM(CASE
-      WHEN a.section = 'Law' THEN INTEGER('1')
+      WHEN section = 'Law' THEN INTEGER('1')
       ELSE INTEGER('0') END) AS law_cnt,
   SUM(CASE
-      WHEN a.section = 'Ireland' OR a.section = '%irish%'THEN INTEGER('1')
+      WHEN section = 'Ireland' OR section = '%irish%'THEN INTEGER('1')
       ELSE INTEGER('0') END) AS ireland_cnt,
 FROM (
   SELECT
@@ -157,10 +153,6 @@ FROM (
       WHEN DAYOFWEEK(DATE(activity_date) ) IN (1,  7) THEN 1
       ELSE 0
     END AS WEEKEND,
-    CASE
-      WHEN DATEDIFF(CURRENT_DATE(),DATE(activity_date)) <= 90 AND events =1 THEN activity_date
-      ELSE NULL
-    END AS active_events_3_month,
     DATEDIFF(CURRENT_DATE(),DATE(activity_date)) AS date_diff,
     section
   FROM (
@@ -192,7 +184,6 @@ FROM (
         visit_ids,
         visit_num,
         visit_page_num,
-        --Added from phase2
         product_type,
         product_version,
         CASE
@@ -208,15 +199,11 @@ FROM (
         saves_events,
         events,
         page_views,
-        activity_date,
+        case when events=1 then activity_date_n else null end as activity_date,
         activity_hour,
         activity_date_time,
         next_date_time,
         section,
-        CASE
-          WHEN next_date_time IS NULL THEN 0
-          ELSE (PARSE_UTC_USEC(next_date_time) - PARSE_UTC_USEC(activity_date_time))/1000000
-        END AS dwell_secs
       FROM (
         SELECT
           *,
@@ -228,7 +215,7 @@ FROM (
             CONCAT(post_visid_high,'_',post_visid_low,'_',visit_num) AS visit_ids,
             visit_num,
             INTEGER(visit_page_num) visit_page_num,
-            DATE(date_time) AS activity_date,
+            DATE(date_time) AS activity_date_n,
             HOUR(date_time) AS activity_hour,
             date_time AS activity_date_time,
             CASE
@@ -270,9 +257,7 @@ FROM (
               WHEN post_page_event = '0' THEN 1
               ELSE 0
             END AS page_views,
-            visit_page_num AS page_num
-            --Added from phase2
-            ,
+            visit_page_num AS page_num,
             post_page_event_var2,
             post_page_event AS event_type,
             post_page_event_var1 AS next_page,
@@ -290,74 +275,15 @@ FROM (
               WHEN post_prop3 LIKE '%past 6 days%' THEN REGEXP_EXTRACT(post_prop3,r':([^,]*)')
             END AS post_prop_filtered,
             evar2,
-            -- , case when prop1 = 'the times and sunday times' then post_prop71 else 'others' end as parent_site
           FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:omniture_rawlogs_daily.newsinttimesnetworkprodv2_daily_], TIMESTAMP('2016-11-01'),CURRENT_TIMESTAMP())) )
         WHERE
           cpn IN (
           SELECT
             cpn
-          FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:athena.accounts_],DATE_ADD(CURRENT_TIMESTAMP(),-1,'DAY'),CURRENT_TIMESTAMP()))
+          FROM
+            [newsuk-datatech-dev-1251:tnl_trial_conversion.conversion_base_90days]
           WHERE
-            subscriptions.mpc = 'MP370')) )) )a
-LEFT JOIN (
-  SELECT
-    cpn,
-    MAX (pd) AS primary_device,
-    MAX(sd) AS secondary_device
-  FROM (
-    SELECT
-      cpn,
-      CASE
-        WHEN rank_=1 THEN device_type
-      END AS pd,
-      CASE
-        WHEN rank_=2 THEN device_type
-      END AS sd
-    FROM (
-      SELECT
-        cpn,
-        device_type,
-        ROW_NUMBER(device_type ) OVER (PARTITION BY cpn ORDER BY cnt DESC) AS rank_,
-      FROM (
-        SELECT
-          cpn,
-          device_type,
-          COUNT(*) AS cnt
-        FROM (
-          SELECT
-            CASE
-              WHEN M.cpn IS NULL THEN 'UNKNOWN'
-              ELSE REGEXP_REPLACE(M.cpn, 'CPN:', '')
-            END AS cpn,
-            LK_DV.device_type AS device_type,
-            M.post_mobiledevice
-          FROM (
-            SELECT
-              post_mobiledevice,
-              CASE
-                WHEN post_prop11 LIKE 'CPN%' THEN REGEXP_REPLACE(post_prop11, 'CPN:', '')
-                WHEN post_prop11 LIKE 'cpn%' THEN REGEXP_REPLACE(post_prop11, 'cpn:', '')
-                ELSE 'null'
-              END AS cpn
-              -- , case when prop1 = 'the times and sunday times' then post_prop71 else 'others' end as parent_site
-            FROM (TABLE_DATE_RANGE([newsuk-datatech-prod:omniture_rawlogs_daily.newsinttimesnetworkprodv2_daily_], TIMESTAMP('2016-11-01'),CURRENT_TIMESTAMP()))) M
-          LEFT JOIN
-            [newsuk-datatech-uat-144114:omniture_reporting.ref_device_type] LK_DV
-          ON
-            LK_DV.device = M.post_mobiledevice )
-        WHERE
-          device_type <> 'UNKNOWN'
-        GROUP BY
-          cpn,
-          device_type )
-      ORDER BY
-        cnt DESC) )
-  GROUP BY
-    cpn) b
-ON
-  a.cpn =b.cpn
+            subscriptions_mpc = 'MP370')) )) )
 GROUP BY
   cpn,
-  primary_device,
-  secondary_device,
   activity_date IGNORE CASE
