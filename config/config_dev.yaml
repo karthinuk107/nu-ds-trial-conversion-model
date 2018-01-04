@@ -1,0 +1,17 @@
+ENVIRONMENT:
+    project: newsuk-datatech-dev-1251
+    dataset_input: user_models_input
+    dataset_output: user_models_result
+    input_table:  tnl_trial_conversion_%s
+    output_table: tnl_trial_conversion_output_
+    input_table_gcs: gs://newsuk-datatech-dev/data_science/churnV2/churn_model_%s.csv
+    input_table_gcs_bucket: newsuk-datatech-dev
+    output_table_gcs: gs://newsuk-datatech-dev/data_science/churnV2/churn_model_output.csv
+    input_local_storage: /tmp/churnV2/churn_model_%s.csv
+    output_local_storage: /tmp/churnV2/churn_model_output.csv
+    output_gcs_storage:  gs://newsuk-datatech-dev/data_science/churnV2/
+    pickle_storage: /usr/local/src/data-science/pickles/churn/churnv2_model.pkl
+    output_table_schema: ( bigquery.SchemaField('cpn','STRING'), bigquery.SchemaField('churn_prediction','STRING'),bigquery.SchemaField('churn_probablity','FLOAT'),bigquery.SchemaField('churn_probabiltiy_decile_grp','INTEGER'),bigquery.SchemaField('churn_probabability_percentile_grp','FLOAT'))
+    athena_output_dataset: user_models_result
+    athena_output_table: churn_scoring_output_athena_
+    athena_gcs_output: gs://newsuk-datatech-dev/model_output/NUK_GENERIC_MODEL_CHURN_SCORING_%s.csv
