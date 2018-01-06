@@ -1,0 +1,43 @@
+## BQ_Environment_variables
+
+project: newsuk-datatech-dev-1251
+dataset_output: user_models_result
+input_table:  tnl_trial_conversion
+input_table_mid_term:  tnl_trial_conversion_mid_term
+input_table_after_trial:  tnl_trial_conversion_after_trial
+conversion_base: conversion_base_90days
+omniture_history: omniture_history
+omniture_agg: omniture_agg
+axiom_features: athena_axiom_features
+
+## Training (Mid Term Cancellation)
+
+trial_agg_31days: trial_agg_31days
+page_views_trend_31days: page_views_trend_31days
+trial_agg_page_views_31days: trial_agg_page_views_31days
+trial_master_feature_31days: trial_master_feature_31days
+trial_agg_master_feature_31days: master_feature_31days
+
+## Test (Mid Term Cancellation)
+
+trial_agg_32to45days: trial_agg_32to45days
+page_views_trend_32to45days: page_views_trend_32to45days
+trial_agg_page_views_32to45days: trial_agg_page_views_32to45days
+trial_master_feature_32to45days: trial_master_feature_32to45days
+trial_agg_master_feature_32to45days: master_feature_32to45days
+
+## Training (After Trial Cancellation)
+
+trial_agg_55days: trial_agg_55days
+page_views_trend_55days: page_views_trend_55days
+trial_agg_page_views_55days: trial_agg_page_views_55days
+trial_master_feature_55days: trial_master_feature_55days
+trial_agg_master_feature_55days: master_feature_55days
+
+## Test (After Trial Cancellation)
+
+trial_agg_56to65days: trial_agg_56to65days
+page_views_trend_56to65days: page_views_trend_56to65days
+trial_agg_page_views_56to65days: trial_agg_page_views_56to65days
+trial_master_feature_56to65days: trial_master_feature_56to65days
+trial_agg_master_feature_56to65days: master_feature_56to65days
