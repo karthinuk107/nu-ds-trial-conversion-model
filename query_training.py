@@ -149,7 +149,7 @@ def conversion_features_to_bq(yml_config_filename):
     with open(yml_config_filename, 'r') as ymlfile:
         cfg = yaml.load(ymlfile)
 
-    project = cfg["project"]
+    project = str(cfg["project"])
 
     # BQ Dataset Names
 
@@ -204,42 +204,42 @@ def conversion_features_to_bq(yml_config_filename):
 
     # Query for Base Table Update
 
-    # run_query_to_table_append(project,conversion_base_sql,dataset,conversion_base)
-    # run_query_to_table_append(project,omniture_history_sql,dataset,omniture_history)
-    # run_query_to_table_standard(project,omniture_agg_sql,dataset,omniture_agg)
-    # run_query_to_table_legacy(project,axiom_features_sql,dataset,axiom_features)
+    run_query_to_table_append(project,conversion_base_sql,dataset,conversion_base)
+    run_query_to_table_append(project,omniture_history_sql.format(project,dataset,conversion_base),dataset,omniture_history)
+    run_query_to_table_standard(project,omniture_agg_sql.format(project,dataset,conversion_base,omniture_history),dataset,omniture_agg)
+    run_query_to_table_legacy(project,axiom_features_sql,dataset,axiom_features)
 
     # Queries for Training (From Trail Start to 31 days of activity and other Features)
 
-    run_query_to_table_legacy(project,trial_agg_31days_sql,dataset_mid,trial_agg_31days)
-    run_query_to_table_legacy(project,page_views_trend_31days_sql,dataset_mid,page_views_trend_31days)
-    run_query_to_table_standard(project,trial_agg_page_views_31days_sql,dataset_mid,trial_agg_page_views_31days)
-    run_query_to_table_standard(project,trial_master_feature_31days_sql,dataset_mid,trial_master_feature_31days)
-    run_query_to_table_legacy(project,trial_agg_master_feature_31days_sql,dataset_mid,trial_agg_master_feature_31days)
+    run_query_to_table_legacy(project,trial_agg_31days_sql.format(project,dataset,omniture_agg),dataset_mid,trial_agg_31days)
+    run_query_to_table_legacy(project,page_views_trend_31days_sql.format(project,dataset,omniture_agg),dataset_mid,page_views_trend_31days)
+    run_query_to_table_standard(project,trial_agg_page_views_31days_sql.format(project,dataset_mid,trial_agg_31days,page_views_trend_31days),dataset_mid,trial_agg_page_views_31days)
+    run_query_to_table_standard(project,trial_master_feature_31days_sql.format(project,dataset_mid,dataset,trial_agg_page_views_31days,axiom_features),dataset_mid,trial_master_feature_31days)
+    run_query_to_table_legacy(project,trial_agg_master_feature_31days_sql.format(project,dataset_mid,trial_master_feature_31days),dataset_mid,trial_agg_master_feature_31days)
 
     # Queries for Test (Trail Start between 32 to 45 days of activity and other Features)
 
-    run_query_to_table_legacy(project,trial_agg_32to45days_sql,dataset_mid,trial_agg_32to45days)
-    run_query_to_table_legacy(project,page_views_trend_32to45days_sql,dataset_mid,page_views_trend_32to45days)
-    run_query_to_table_standard(project,trial_agg_page_views_32to45days_sql,dataset_mid,trial_agg_page_views_32to45days)
-    run_query_to_table_standard(project,trial_master_feature_32to45days_sql,dataset_mid,trial_master_feature_32to45days)
-    run_query_to_table_legacy(project,trial_agg_master_feature_32to45days_sql,dataset_mid,trial_agg_master_feature_32to45days)
+    run_query_to_table_legacy(project,trial_agg_32to45days_sql.format(project,dataset,omniture_agg),dataset_mid,trial_agg_32to45days)
+    run_query_to_table_legacy(project,page_views_trend_32to45days_sql.format(project,dataset,omniture_agg),dataset_mid,page_views_trend_32to45days)
+    run_query_to_table_standard(project,trial_agg_page_views_32to45days_sql.format(project,dataset_mid,trial_agg_32to45days,page_views_trend_32to45days),dataset_mid,trial_agg_page_views_32to45days)
+    run_query_to_table_standard(project,trial_master_feature_32to45days_sql.format(project,dataset_mid,dataset,trial_agg_page_views_32to45days,axiom_features),dataset_mid,trial_master_feature_32to45days)
+    run_query_to_table_legacy(project,trial_agg_master_feature_32to45days_sql.format(project,dataset_mid,trial_master_feature_32to45days),dataset_mid,trial_agg_master_feature_32to45days)
 
     # Queries for Training (From Trail Start to 55 days of activity and other Features)
 
-    run_query_to_table_legacy(project,trial_agg_55days_sql,dataset_after,trial_agg_55days)
-    run_query_to_table_legacy(project,page_views_trend_55days_sql,dataset_after,page_views_trend_55days)
-    run_query_to_table_standard(project,trial_agg_page_views_55days_sql,dataset_after,trial_agg_page_views_55days)
-    run_query_to_table_standard(project,trial_master_feature_55days_sql,dataset_after,trial_master_feature_55days)
-    run_query_to_table_legacy(project,trial_agg_master_feature_55days_sql,dataset_after,trial_agg_master_feature_55days)
+    run_query_to_table_legacy(project,trial_agg_55days_sql.format(project,dataset,omniture_agg),dataset_after,trial_agg_55days)
+    run_query_to_table_legacy(project,page_views_trend_55days_sql.format(project,dataset,omniture_agg),dataset_after,page_views_trend_55days)
+    run_query_to_table_standard(project,trial_agg_page_views_55days_sql.format(project,dataset_after,trial_agg_55days,page_views_trend_55days),dataset_after,trial_agg_page_views_55days)
+    run_query_to_table_standard(project,trial_master_feature_55days_sql.format(project,dataset_after,dataset,trial_agg_page_views_55days,axiom_features),dataset_after,trial_master_feature_55days)
+    run_query_to_table_legacy(project,trial_agg_master_feature_55days_sql.format(project,dataset_after,trial_master_feature_55days),dataset_after,trial_agg_master_feature_55days)
 
     # Queries for Test (Trail Start between 56 to 65 days of activity and other Features)
 
-    run_query_to_table_legacy(project,trial_agg_56to65days_sql,dataset_after,trial_agg_56to65days)
-    run_query_to_table_legacy(project,page_views_trend_56to65days_sql,dataset_after,page_views_trend_56to65days)
-    run_query_to_table_standard(project,trial_agg_page_views_56to65days_sql,dataset_after,trial_agg_page_views_56to65days)
-    run_query_to_table_standard(project,trial_master_feature_56to65days_sql,dataset_after,trial_master_feature_56to65days)
-    run_query_to_table_legacy(project,trial_agg_master_feature_56to65days_sql,dataset_after,trial_agg_master_feature_56to65days)
+    run_query_to_table_legacy(project,trial_agg_56to65days_sql.format(project,dataset,omniture_agg),dataset_after,trial_agg_56to65days)
+    run_query_to_table_legacy(project,page_views_trend_56to65days_sql.format(project,dataset,omniture_agg),dataset_after,page_views_trend_56to65days)
+    run_query_to_table_standard(project,trial_agg_page_views_56to65days_sql.format(project,dataset_after,trial_agg_56to65days,page_views_trend_56to65days),dataset_after,trial_agg_page_views_56to65days)
+    run_query_to_table_standard(project,trial_master_feature_56to65days_sql.format(project,dataset_after,dataset,trial_agg_page_views_56to65days,axiom_features),dataset_after,trial_master_feature_56to65days)
+    run_query_to_table_legacy(project,trial_agg_master_feature_56to65days_sql.format(project,dataset_after,trial_master_feature_56to65days),dataset_after,trial_agg_master_feature_56to65days)
 
 if __name__ == "__main__":
     args = parser.parse_args()

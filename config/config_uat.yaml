@@ -1,6 +1,6 @@
 ## BQ_Environment_variables
 
-project: newsuk-datatech-prod
+project: newsuk-datatech-uat-144114
 dataset_output: user_models_result
 input_table:  tnl_trial_conversion
 input_table_mid_term:  tnl_trial_conversion_mid_term
